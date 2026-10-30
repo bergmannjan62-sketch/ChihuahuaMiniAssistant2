@@ -1,0 +1,17 @@
+name: Chihuahua Android APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+
+      - name: Dateien prüfen
+        run: |
+          ls -la
+          unzip -l ChihuahuaMiniAssistant-AndroidBuild.zip
