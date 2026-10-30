@@ -1,3 +1,4 @@
+
 name: Chihuahua Android APK
 
 on:
@@ -24,6 +25,15 @@ jobs:
         run: |
           unzip -o ChihuahuaMiniAssistant-Groq-Diagnose.zip -d source
 
+      - name: Groq KI-Modell aktualisieren
+        run: |
+          echo "Suche bisherigen Groq-Modellnamen..."
+
+          grep -rlZ 'llama-3.1-8b-instant' source/ChihuahuaMiniAssistant --include='*.kt' | xargs -0 -r sed -i 's/llama-3\.1-8b-instant/openai\/gpt-oss-20b/g'
+
+          echo "Pruefe neuen Modellnamen..."
+          grep -rn 'openai/gpt-oss-20b' source/ChihuahuaMiniAssistant --include='*.kt'
+
       - name: Android SDK pruefen
         run: |
           echo "ANDROID_HOME=$ANDROID_HOME"
@@ -37,6 +47,6 @@ jobs:
       - name: APK bereitstellen
         uses: actions/upload-artifact@v4
         with:
-          name: Chihuahua-Interaktiv-APK
+          name: Chihuahua-Groq-APK
           path: source/ChihuahuaMiniAssistant/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
