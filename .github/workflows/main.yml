@@ -21,14 +21,9 @@ jobs:
       - name: Gradle einrichten
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Animierten Chihuahua entpacken
+      - name: Chihuahua Sprachversion entpacken
         run: |
-          unzip -o ChihuahuaMiniAssistant-Animiert.zip -d source
-
-      - name: Groq KI-Modell aktualisieren
-        run: |
-          grep -rlZ 'llama-3.1-8b-instant' source/ChihuahuaMiniAssistant --include='*.kt' | xargs -0 -r sed -i 's/llama-3\.1-8b-instant/openai\/gpt-oss-20b/g'
-          grep -rn 'openai/gpt-oss-20b' source/ChihuahuaMiniAssistant --include='*.kt'
+          unzip -o ChihuahuaMiniAssistant-Sprache.zip -d source
 
       - name: Android APK bauen
         working-directory: source/ChihuahuaMiniAssistant
@@ -37,6 +32,6 @@ jobs:
       - name: APK bereitstellen
         uses: actions/upload-artifact@v4
         with:
-          name: Chihuahua-Animiert-APK
+          name: Chihuahua-Sprache-APK
           path: source/ChihuahuaMiniAssistant/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
