@@ -25,10 +25,43 @@ jobs:
 
       - name: Java- und Kotlin-Version angleichen
         working-directory: source/ChihuahuaMiniAssistant
+        shell: bash
         run: |
-          sed -i '/android {/a\    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_17\n        targetCompatibility JavaVersion.VERSION_17\n    }' app/build.gradle.kts
-          sed -i '/android {/a\    kotlinOptions {\n        jvmTarget = "17"\n    }' app/build.gradle.kts
-          cat app/build.gradle.kts
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path("app/build.gradle.kts")
+          s = p.read_text()
+
+          # Vorherige, automatisch eingefügte Konfigurationen verwijderen.
+          s = s.replace('''    compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+          ''', '')
+          s = s.replace('''    kotlinOptions {
+                  jvmTarget = "17"
+              }
+          ''', '')
+
+          # Java- und Kotlin-Bytecode auf Version 17 setzen.
+          if "compileOptions {" not in s:
+              s = s.replace(
+                  "android {",
+                  'android {\n    compileOptions {\n        sourceCompatibility = JavaVersion.VERSION_17\n        targetCompatibility = JavaVersion.VERSION_17\n    }',
+                  1
+              )
+
+          if "kotlinOptions {" not in s:
+              s = s.replace(
+                  "android {",
+                  'android {\n    kotlinOptions {\n        jvmTarget = "17"\n    }',
+                  1
+              )
+
+          p.write_text(s)
+          print(p.read_text())
+          PY
 
       - name: Android-Projekt bauen
         working-directory: source/ChihuahuaMiniAssistant
