@@ -1,17 +1,47 @@
 name: Chihuahua Android APK
 
 on:
-  workflow_dispatch:
+workflow_dispatch:
+push:
+paths:
+- 'ChihuahuaMiniAssistant-AndroidBuild.zip'
+- '.github/workflows/main.yml'
+
+permissions:
+contents: read
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+build:
+runs-on: ubuntu-latest
 
-    steps:
-      - name: Repository laden
-        uses: actions/checkout@v4
+steps:
+  - name: Repository herunterladen
+    uses: actions/checkout@v4
 
-      - name: Dateien prüfen
-        run: |
-          ls -la
-          unzip -l ChihuahuaMiniAssistant-AndroidBuild.zip
+  - name: Java einrichten
+    uses: actions/setup-java@v4
+    with:
+      distribution: temurin
+      java-version: '17'
+
+  - name: Gradle installieren
+    uses: gradle/actions/setup-gradle@v4
+
+  - name: Android-Projekt entpacken
+    run: |
+      mkdir project
+      unzip -o ChihuahuaMiniAssistant-AndroidBuild.zip -d project
+      find project -maxdepth 4 -type f
+
+  - name: Android APK bauen
+    run: |
+      cd project/ChihuahuaMiniAssistant
+      gradle assembleDebug
+
+  - name: APK bereitstellen
+    uses: actions/upload-artifact@v4
+    with:
+      name: ChihuahuaMiniAssistant-APK
+      path: project/**/build/outputs/apk/debug/*.apk
+      if-no-files-found: error
+      retention-days: 7
