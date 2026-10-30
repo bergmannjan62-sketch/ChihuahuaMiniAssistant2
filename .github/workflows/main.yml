@@ -11,65 +11,29 @@ jobs:
       - name: Repository herunterladen
         uses: actions/checkout@v4
 
-      - name: Java einrichten
+      - name: Java 17 einrichten
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
+      - name: Android SDK einrichten
+        uses: android-actions/setup-android@v3
+
       - name: Gradle einrichten
         uses: gradle/actions/setup-gradle@v4
 
-      - name: ZIP entpacken
-        run: unzip -o ChihuahuaMiniAssistant-AndroidBuild.zip -d source
-
-      - name: Java- und Kotlin-Version angleichen
-        working-directory: source/ChihuahuaMiniAssistant
-        shell: bash
+      - name: Neue Chihuahua-Version entpacken
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
+          unzip -o ChihuahuaMiniAssistant-Interaktiv.zip -d source
 
-          p = Path("app/build.gradle.kts")
-          s = p.read_text()
-
-          # Vorherige, automatisch eingefügte Konfigurationen verwijderen.
-          s = s.replace('''    compileOptions {
-                  sourceCompatibility JavaVersion.VERSION_17
-                  targetCompatibility JavaVersion.VERSION_17
-              }
-          ''', '')
-          s = s.replace('''    kotlinOptions {
-                  jvmTarget = "17"
-              }
-          ''', '')
-
-          # Java- und Kotlin-Bytecode auf Version 17 setzen.
-          if "compileOptions {" not in s:
-              s = s.replace(
-                  "android {",
-                  'android {\n    compileOptions {\n        sourceCompatibility = JavaVersion.VERSION_17\n        targetCompatibility = JavaVersion.VERSION_17\n    }',
-                  1
-              )
-
-          if "kotlinOptions {" not in s:
-              s = s.replace(
-                  "android {",
-                  'android {\n    kotlinOptions {\n        jvmTarget = "17"\n    }',
-                  1
-              )
-
-          p.write_text(s)
-          print(p.read_text())
-          PY
-
-      - name: Android-Projekt bauen
+      - name: Android APK bauen
         working-directory: source/ChihuahuaMiniAssistant
         run: gradle assembleDebug
 
       - name: APK bereitstellen
         uses: actions/upload-artifact@v4
         with:
-          name: Chihuahua-Assistant-APK
+          name: Chihuahua-Interaktiv-APK
           path: source/ChihuahuaMiniAssistant/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
