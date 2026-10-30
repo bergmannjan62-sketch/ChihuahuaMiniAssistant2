@@ -21,24 +21,14 @@ jobs:
       - name: Gradle einrichten
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Chihuahua ZIP entpacken
+      - name: Animierten Chihuahua entpacken
         run: |
-          unzip -o ChihuahuaMiniAssistant-Groq-Diagnose.zip -d source
+          unzip -o ChihuahuaMiniAssistant-Animiert.zip -d source
 
       - name: Groq KI-Modell aktualisieren
         run: |
-          echo "Suche bisherigen Groq-Modellnamen..."
-
           grep -rlZ 'llama-3.1-8b-instant' source/ChihuahuaMiniAssistant --include='*.kt' | xargs -0 -r sed -i 's/llama-3\.1-8b-instant/openai\/gpt-oss-20b/g'
-
-          echo "Pruefe neuen Modellnamen..."
           grep -rn 'openai/gpt-oss-20b' source/ChihuahuaMiniAssistant --include='*.kt'
-
-      - name: Android SDK pruefen
-        run: |
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          ls "$ANDROID_HOME/platforms"
-          ls "$ANDROID_HOME/build-tools"
 
       - name: Android APK bauen
         working-directory: source/ChihuahuaMiniAssistant
@@ -47,6 +37,6 @@ jobs:
       - name: APK bereitstellen
         uses: actions/upload-artifact@v4
         with:
-          name: Chihuahua-Groq-APK
+          name: Chihuahua-Animiert-APK
           path: source/ChihuahuaMiniAssistant/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
