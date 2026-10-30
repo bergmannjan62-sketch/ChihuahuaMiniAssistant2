@@ -1,4 +1,3 @@
-
 name: Chihuahua Android APK
 
 on:
@@ -21,9 +20,9 @@ jobs:
       - name: Gradle einrichten
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Chihuahua Sprachversion entpacken
+      - name: Hey Charly entpacken
         run: |
-          unzip -o ChihuahuaMiniAssistant-Sprache.zip -d source
+          unzip -o ChihuahuaMiniAssistant-Hey-Charly.zip -d source
 
       - name: Android APK bauen
         working-directory: source/ChihuahuaMiniAssistant
@@ -32,6 +31,6 @@ jobs:
       - name: APK bereitstellen
         uses: actions/upload-artifact@v4
         with:
-          name: Chihuahua-Sprache-APK
+          name: Chihuahua-Hey-Charly-APK
           path: source/ChihuahuaMiniAssistant/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
