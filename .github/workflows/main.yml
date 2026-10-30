@@ -22,7 +22,7 @@ jobs:
 
       - name: Chihuahua ZIP entpacken
         run: |
-          unzip -o ChihuahuaMiniAssistant-Interaktiv.zip -d source
+          unzip -o ChihuahuaMiniAssistant-Groq.zip -d source
 
       - name: Android SDK pruefen
         run: |
