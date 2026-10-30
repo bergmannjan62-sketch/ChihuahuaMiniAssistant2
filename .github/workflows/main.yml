@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Repository herunterladen
@@ -17,19 +17,22 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Android SDK einrichten
-        uses: android-actions/setup-android@v3
-
       - name: Gradle einrichten
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Neue Chihuahua-Version entpacken
+      - name: Chihuahua ZIP entpacken
         run: |
           unzip -o ChihuahuaMiniAssistant-Interaktiv.zip -d source
 
+      - name: Android SDK pruefen
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          ls "$ANDROID_HOME/platforms"
+          ls "$ANDROID_HOME/build-tools"
+
       - name: Android APK bauen
         working-directory: source/ChihuahuaMiniAssistant
-        run: gradle assembleDebug
+        run: gradle assembleDebug --stacktrace
 
       - name: APK bereitstellen
         uses: actions/upload-artifact@v4
