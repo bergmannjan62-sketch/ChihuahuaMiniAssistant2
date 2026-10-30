@@ -24,6 +24,13 @@ jobs:
         run: |
           unzip -o ChihuahuaMiniAssistant-AndroidBuild.zip -d source
 
+            - name: Java- und Kotlin-Version angleichen
+        working-directory: source/ChihuahuaMiniAssistant
+        run: |
+          sed -i '/android {/a\    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_17\n        targetCompatibility JavaVersion.VERSION_17\n    }' app/build.gradle.kts
+          sed -i '/android {/a\    kotlinOptions {\n        jvmTarget = "17"\n    }' app/build.gradle.kts
+          cat app/build.gradle.kts
+
       - name: Android-Projekt bauen
         working-directory: source/ChihuahuaMiniAssistant
         run: gradle assembleDebug
