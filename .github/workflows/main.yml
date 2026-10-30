@@ -17,7 +17,20 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: ZIP-Datei prüfen
+      - name: Gradle einrichten
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: ZIP entpacken
         run: |
-          ls -la
-          unzip -l ChihuahuaMiniAssistant-AndroidBuild.zip
+          unzip -o ChihuahuaMiniAssistant-AndroidBuild.zip -d source
+
+      - name: Android-Projekt bauen
+        working-directory: source/ChihuahuaMiniAssistant
+        run: gradle assembleDebug
+
+      - name: APK bereitstellen
+        uses: actions/upload-artifact@v4
+        with:
+          name: Chihuahua-Assistant-APK
+          path: source/ChihuahuaMiniAssistant/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
