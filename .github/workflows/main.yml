@@ -1,4 +1,4 @@
-name: Chihuahua Android APK
+name: Charly 7.1 Android APK
 
 on:
   workflow_dispatch:
@@ -20,9 +20,9 @@ jobs:
       - name: Gradle einrichten
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Charly 7.0 entpacken
+      - name: Charly 7.1 entpacken
         run: |
-          unzip -o ChihuahuaMiniAssistant-Charly-7-WhatsApp-Vision.zip -d source
+          unzip -o Charly-7-1-Modern.zip -d source
 
       - name: Android APK bauen
         working-directory: source/ChihuahuaMiniAssistant
@@ -31,6 +31,6 @@ jobs:
       - name: APK bereitstellen
         uses: actions/upload-artifact@v4
         with:
-          name: Charly-7-WhatsApp-Vision-APK
+          name: Charly-7-1-Modern-APK
           path: source/ChihuahuaMiniAssistant/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
