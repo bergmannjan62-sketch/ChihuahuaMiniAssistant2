@@ -22,7 +22,7 @@ jobs:
 
       - name: Charly entpacken
         run: |
-          unzip -o ChihuahuaMiniAssistant-Charly-Lebendig.zip -d source
+          unzip -o ChihuahuaMiniAssistant-Charly-Echtes-Laufen.zip -d source
 
       - name: Android APK bauen
         working-directory: source/ChihuahuaMiniAssistant
@@ -31,6 +31,6 @@ jobs:
       - name: APK bereitstellen
         uses: actions/upload-artifact@v4
         with:
-          name: Charly-4-Lebendig-APK
+          name: Charly-Echtes-Laufen-APK
           path: source/ChihuahuaMiniAssistant/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
