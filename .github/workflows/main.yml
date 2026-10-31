@@ -20,9 +20,9 @@ jobs:
       - name: Gradle einrichten
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Charly 5.0 entpacken
+      - name: Charly 6.0 entpacken
         run: |
-          unzip -o ChihuahuaMiniAssistant-Charly-5-Gespraeche.zip -d source
+          unzip -o ChihuahuaMiniAssistant-Charly-6-Handysteuerung.zip -d source
 
       - name: Android APK bauen
         working-directory: source/ChihuahuaMiniAssistant
@@ -31,6 +31,6 @@ jobs:
       - name: APK bereitstellen
         uses: actions/upload-artifact@v4
         with:
-          name: Charly-5-Gespraeche-APK
+          name: Charly-6-Handysteuerung-APK
           path: source/ChihuahuaMiniAssistant/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
